@@ -16,16 +16,28 @@ public class User {
     @GeneratedValue
     @Column(name = "user_id")
     private int id;
+
     @Column(name = "email")
-    @Email(message = "*Wprowadz pooprawny adres Email")
-    @NotEmpty(message = "*Wprowadz adres Email")
+    @Email(message = "*Enter correct Email")
+    @NotEmpty(message = "*Enter an Email")
     private String email;
-    @Length(min = 5, message = "*Hasło powinno mieć minimum 5 znaków")
-    @NotEmpty(message = "*Podaj hasło")
+
+    @Length(min = 8, message = "*Password length should be at least 8 characters long")
+    @NotEmpty(message = "*Enter password")
     private String password;
+
     private String name;
+
     private String lastName;
+
+    private int age;
+
+    private int height;
+
+    private int weight;
+
     private int active;
+
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Role> roles;
