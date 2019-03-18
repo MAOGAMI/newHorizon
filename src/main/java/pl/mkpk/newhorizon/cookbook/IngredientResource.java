@@ -1,14 +1,33 @@
 package pl.mkpk.newhorizon.cookbook;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
-public class IngedientResource {
+@Embeddable
+public class IngredientResource {
+
+    //@Transient
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "i_id")
     public Ingredient ingredient;
     BigDecimal numberOfUnits;
 
-    public IngedientResource(Ingredient ingredient, BigDecimal number){
+    public IngredientResource() {
+        ingredient=null;
+        numberOfUnits=new BigDecimal(0);
+    }
+
+    public IngredientResource(Ingredient ingredient, BigDecimal number){
         this.ingredient=ingredient;
         this.numberOfUnits=number;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     @Override

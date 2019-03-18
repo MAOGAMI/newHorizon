@@ -1,6 +1,7 @@
 package pl.mkpk.newhorizon.cookbook;
 
 import org.springframework.stereotype.Component;
+import pl.mkpk.newhorizon.repository.CookingRecipeRepository;
 import pl.mkpk.newhorizon.repository.IngredientRepository;
 
 import javax.annotation.PostConstruct;
@@ -11,37 +12,38 @@ import java.util.Map;
 @Component
 public class RunAtStart {
     private IngredientRepository ingredientRepository;
+    private CookingRecipeRepository cookingRecipeRepository;
 
-    public RunAtStart(IngredientRepository ingredientRepository) {
+    public RunAtStart(IngredientRepository ingredientRepository, CookingRecipeRepository cookingRecipeRepository) {
         this.ingredientRepository = ingredientRepository;
+        this.cookingRecipeRepository = cookingRecipeRepository;
     }
 
     @PostConstruct
     public void GenerateIngredients(){
-        IngedientsBase ingedientsBase= new IngedientsBase();
-        ingedientsBase.addIngredient(new Ingredient(
+        IngredientsBase ingredientsBase= new IngredientsBase();
+        /*ingredientsBase.addIngredient(new Ingredient(
                 "Jajka",
                 new BigDecimal(65),
                 StackType.UNIT,
                 true,
                 new BigDecimal(180))
         );
-        ingedientsBase.addIngredient(new Ingredient(
+        ingredientsBase.addIngredient(new Ingredient(
                 "Mleko",
                 new BigDecimal(100),
                 StackType.ML,
                 true,
                 new BigDecimal(65))
         );
-        ingedientsBase.addIngredient(new Ingredient(
+        ingredientsBase.addIngredient(new Ingredient(
                 "Mąka",
                 new BigDecimal(100),
                 StackType.GRAMS,
                 true,
                 new BigDecimal(18))
         );
-
-        Map<String, Ingredient> selects = ingedientsBase.ingredientMap;
+        Map<String, Ingredient> selects = ingredientsBase.ingredientMap;
 
         for(Map.Entry<String, Ingredient> entry : selects.entrySet()) {
             String key = entry.getKey();
@@ -50,12 +52,29 @@ public class RunAtStart {
             ingredientRepository.save(value);
         }
 
+        {
+            List<Ingredient> ingredient=ingredientRepository.findByName("Mąka");
+            System.out.println(ingredient);
+        }
+
         List<Ingredient> ingredientList=ingredientRepository.findAll();
 
         for (Ingredient ingredient:ingredientList) {
-            ingedientsBase.addIngredient(ingredient);
+            ingredientsBase.addIngredient(ingredient);
         }
 
-        System.out.println(ingedientsBase);
+        System.out.println(ingredientsBase);*/
+
+        CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingredientRepository)
+                .setName("test next recipe")
+                .addIngredients( "Jajka",new BigDecimal(12))
+                .addIngredients( "Mleko",new BigDecimal(300))
+                .addIngredients( "Mąka",new BigDecimal(500))
+                .addPreparationStep("Wbij więcej jaj do mąki. Dolej mleka. Wymieszaj. Wtaw do piekarnika nagrzanego do 100* na 30 minut.",new BigDecimal(6))
+                .build();
+
+        cookingRecipeRepository.save(recipe);
+
+        System.out.println(recipe.toString());
     }
 }

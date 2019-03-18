@@ -1,26 +1,30 @@
 package pl.mkpk.newhorizon.cookbook;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 public class Ingredient {
 
     @Id
-    @GeneratedValue
-    public int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public int i_id;
+    @Column(/*unique=true,*/ nullable=false,length = 50)
     public String name;
     public String specifiedName;
 
+    @Column(nullable=false)
     public BigDecimal calculationPer;//specyfic calculation
     //example: 1 egg can have 64g -> calculationPer = 64, unit = "sztuki" (for stacking ingredients)
+    @Column(nullable=false)
+    @Enumerated(EnumType.STRING)
     public StackType unit;
 
+    @Column(nullable=false)
     public boolean alergen;
 
     //unification data: per 100g/ml only
+    @Column(nullable=false)
     public BigDecimal kalories;
     public BigDecimal fat;
     public BigDecimal satturatedFat;
@@ -43,6 +47,14 @@ public class Ingredient {
         this.unit = unit;
         this.alergen = alergen;
         this.kalories = kaloriesPer100;
+    }
+
+    public int getI_id() {
+        return i_id;
+    }
+
+    public void setI_id(int i_id) {
+        this.i_id = i_id;
     }
 
     @Override

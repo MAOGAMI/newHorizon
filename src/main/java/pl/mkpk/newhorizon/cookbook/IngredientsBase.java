@@ -1,14 +1,15 @@
 package pl.mkpk.newhorizon.cookbook;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IngedientsBase {
+public class IngredientsBase {
 
     public Map<String,Ingredient> ingredientMap;
 
-    public IngedientsBase(){
+    public IngredientsBase(){
         ingredientMap=new HashMap<>();
     }
 
@@ -22,5 +23,11 @@ public class IngedientsBase {
             throw new RuntimeException("no ingredient find");
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngedientsBase{" + ingredientMap +
+                '}';
     }
 }
