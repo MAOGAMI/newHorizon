@@ -1,9 +1,16 @@
 package pl.mkpk.newhorizon.cookbook;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
+@Entity
 public class Ingredient {
 
+    @Id
+    @GeneratedValue
+    public int id;
     public String name;
     public String specifiedName;
 
@@ -21,6 +28,14 @@ public class Ingredient {
     public BigDecimal carbohydrates;
     public BigDecimal sugar;
     public BigDecimal salt;
+
+    public Ingredient(){
+        this.name = "Default";
+        this.calculationPer = BigDecimal.valueOf(100);
+        this.unit = StackType.UNIT;
+        this.alergen = false;
+        this.kalories = BigDecimal.valueOf(100);
+    }
 
     public Ingredient(String name, BigDecimal calculationPer, StackType unit, boolean alergen, BigDecimal kaloriesPer100) {
         this.name = name;
