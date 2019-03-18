@@ -3,13 +3,12 @@ package pl.mkpk.newhorizon.cookbook;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class CookingRecipe {
 
     public String name;
 
-    List<IngedientResource> ingredients;
+    List<IngredientResource> ingredients;
     List<PreparationStep> preparationSteps;
     public int numberOfPortions;
     public BigDecimal kalories;
@@ -26,7 +25,7 @@ public class CookingRecipe {
     private BigDecimal calculateCalories() {
         BigDecimal result=new BigDecimal(0);
 
-        for (IngedientResource ingrediendStack:ingredients) {
+        for (IngredientResource ingrediendStack:ingredients) {
             result=result.add(ingrediendStack.calculateCalories());
         }
         return result;
@@ -34,9 +33,9 @@ public class CookingRecipe {
 
     public static class RecipeBuilder {
         private String name;
-        private List<IngedientResource> ingredients;
+        IngredientsBase base;
         private List<PreparationStep> preparationSteps;
-        IngedientsBase base;
+        private List<IngredientResource> ingredients;
 
         //int numberOfPortions;
 
@@ -44,7 +43,7 @@ public class CookingRecipe {
         boolean isIngredients;
         boolean isPreparationStep;
 
-        public RecipeBuilder(IngedientsBase base){
+        public RecipeBuilder(IngredientsBase base){
             this.base=base;
 
             name="";
@@ -63,7 +62,7 @@ public class CookingRecipe {
 
         public RecipeBuilder addIngredients(String ingredientName, BigDecimal numOf){
 
-            this.ingredients.add(new IngedientResource(
+            this.ingredients.add(new IngredientResource(
                     base.getIngredient(ingredientName),
                     numOf));
             this.isIngredients=true;

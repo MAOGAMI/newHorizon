@@ -3,12 +3,11 @@ package pl.mkpk.newhorizon;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.mkpk.newhorizon.cookbook.CookingRecipe;
-import pl.mkpk.newhorizon.cookbook.IngedientsBase;
 import pl.mkpk.newhorizon.cookbook.Ingredient;
+import pl.mkpk.newhorizon.cookbook.IngredientsBase;
 import pl.mkpk.newhorizon.cookbook.StackType;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @SpringBootTest
 public class CookingRecipeTest {
@@ -16,22 +15,22 @@ public class CookingRecipeTest {
     @Test
     public void CreateRecite(){
         //given
-        IngedientsBase ingedientsBase= new IngedientsBase();
-        ingedientsBase.addIngredient(new Ingredient(
+        IngredientsBase ingredientsBase = new IngredientsBase();
+        ingredientsBase.addIngredient(new Ingredient(
                 "Jajka",
                 new BigDecimal(65),
                 StackType.UNIT,
                 true,
                 new BigDecimal(180))
         );
-        ingedientsBase.addIngredient(new Ingredient(
+        ingredientsBase.addIngredient(new Ingredient(
                 "Mleko",
                 new BigDecimal(100),
                 StackType.ML,
                 true,
                 new BigDecimal(65))
         );
-        ingedientsBase.addIngredient(new Ingredient(
+        ingredientsBase.addIngredient(new Ingredient(
                 "Mąka",
                 new BigDecimal(100),
                 StackType.GRAMS,
@@ -40,7 +39,7 @@ public class CookingRecipeTest {
         );
 
         // when
-        CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingedientsBase)
+        CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingredientsBase)
                 .setName("test recipe")
                 .addIngredients( "Jajka",new BigDecimal(1))
                 .addIngredients( "Mleko",new BigDecimal(100))

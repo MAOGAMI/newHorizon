@@ -18,22 +18,22 @@ public class RunAtStart {
 
     @PostConstruct
     public void GenerateIngredients(){
-        IngedientsBase ingedientsBase= new IngedientsBase();
-        ingedientsBase.addIngredient(new Ingredient(
+        IngredientsBase ingredientsBase = new IngredientsBase();
+        ingredientsBase.addIngredient(new Ingredient(
                 "Jajka",
                 new BigDecimal(65),
                 StackType.UNIT,
                 true,
                 new BigDecimal(180))
         );
-        ingedientsBase.addIngredient(new Ingredient(
+        ingredientsBase.addIngredient(new Ingredient(
                 "Mleko",
                 new BigDecimal(100),
                 StackType.ML,
                 true,
                 new BigDecimal(65))
         );
-        ingedientsBase.addIngredient(new Ingredient(
+        ingredientsBase.addIngredient(new Ingredient(
                 "Mąka",
                 new BigDecimal(100),
                 StackType.GRAMS,
@@ -41,7 +41,7 @@ public class RunAtStart {
                 new BigDecimal(18))
         );
 
-        Map<String, Ingredient> selects = ingedientsBase.ingredientMap;
+        Map<String, Ingredient> selects = ingredientsBase.ingredientMap;
 
         for(Map.Entry<String, Ingredient> entry : selects.entrySet()) {
             String key = entry.getKey();
@@ -53,9 +53,9 @@ public class RunAtStart {
         List<Ingredient> ingredientList=ingredientRepository.findAll();
 
         for (Ingredient ingredient:ingredientList) {
-            ingedientsBase.addIngredient(ingredient);
+            ingredientsBase.addIngredient(ingredient);
         }
 
-        System.out.println(ingedientsBase);
+        System.out.println(ingredientsBase);
     }
 }

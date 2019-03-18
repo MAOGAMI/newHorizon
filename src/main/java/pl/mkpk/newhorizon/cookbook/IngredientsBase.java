@@ -1,14 +1,13 @@
 package pl.mkpk.newhorizon.cookbook;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class IngedientsBase {
+public class IngredientsBase {
 
     public Map<String,Ingredient> ingredientMap;
 
-    public IngedientsBase(){
+    public IngredientsBase(){
         ingredientMap=new HashMap<>();
     }
 

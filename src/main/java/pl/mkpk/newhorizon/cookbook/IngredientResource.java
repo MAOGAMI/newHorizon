@@ -2,11 +2,11 @@ package pl.mkpk.newhorizon.cookbook;
 
 import java.math.BigDecimal;
 
-public class IngedientResource {
+public class IngredientResource {
     public Ingredient ingredient;
     BigDecimal numberOfUnits;
 
-    public IngedientResource(Ingredient ingredient, BigDecimal number){
+    public IngredientResource(Ingredient ingredient, BigDecimal number){
         this.ingredient=ingredient;
         this.numberOfUnits=number;
     }
