@@ -2,11 +2,11 @@ package pl.mkpk.newhorizon.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import pl.mkpk.newhorizon.validators.annotations.ValidEmail;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
+import java.util.Collection;
 
 @Data
 @Entity
@@ -18,7 +18,7 @@ public class User {
     private int id;
 
     @Column(name = "email")
-    @Email(message = "*Enter correct Email")
+    @ValidEmail
     @NotEmpty(message = "*Enter an Email")
     private String email;
 
@@ -26,7 +26,10 @@ public class User {
     @NotEmpty(message = "*Enter password")
     private String password;
 
-    private String name;
+    @Transient
+    private String matchingPassword;
+
+    private String firstName;
 
     private String lastName;
 
@@ -40,5 +43,5 @@ public class User {
 
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Role> roles;
+    private Collection<Role> roles;
 }

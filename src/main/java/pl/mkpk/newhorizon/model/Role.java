@@ -12,5 +12,5 @@ public class Role {
     @GeneratedValue
     @Column(name = "role_id")
     private int id;
-    private String role;
+    private String name;
 }
