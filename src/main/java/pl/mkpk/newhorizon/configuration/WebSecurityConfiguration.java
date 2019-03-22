@@ -23,27 +23,27 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .authorizeRequests()
-//                .antMatchers("/changePassword")
-//                .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN", "ROLE_DIETICAN")
-//                .anyRequest()
-//                .permitAll()
-//                .and()
-//                .csrf()
-//                .disable()
-//                .formLogin()
-//                .loginPage("/login")
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .loginProcessingUrl("/login-process")
-//                .defaultSuccessUrl("/")
-//                .failureUrl("/errorLogout")
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/");
-        httpSecurity.httpBasic().disable();
+        httpSecurity
+                .authorizeRequests()
+                .antMatchers("/forgot-password")
+                .hasAnyAuthority("USER", "ADMIN", "DIETICAN")
+                .anyRequest()
+                .permitAll()
+                .and()
+                .csrf()
+                .disable()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .loginProcessingUrl("/loginProcessing")
+                .defaultSuccessUrl("/")
+                .failureUrl("/errorLogout")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/");
+//        httpSecurity.httpBasic().disable();
     }
 
     @Override
@@ -52,12 +52,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .jdbcAuthentication()
                 .usersByUsernameQuery(
                         "SELECT u.email, u.password, u.active FROM user u" +
-                                "WHERE u.email = ?")
+                                " WHERE u.email = ?")
                 .authoritiesByUsernameQuery(
-                        "SELECT u.email, r.role_name FROM user u" +
-                                "JOIN user_role ur ON ur.user_id = u.id" +
-                                "JOIN role r ON ur.roles_id = r.id" +
-                                "WHERE u.email = ?")
+                        "SELECT u.email, r.name FROM user u" +
+                                " JOIN user_role ur ON ur.user_id = u.id" +
+                                " JOIN role r ON ur.roles_id = r.id" +
+                                " WHERE u.email = ?")
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
@@ -66,5 +66,4 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
 }
