@@ -23,25 +23,46 @@ public class RunAtStart {
     public void GenerateIngredients(){
         IngredientsBase ingredientsBase= new IngredientsBase();
         /*ingredientsBase.addIngredient(new Ingredient(
-                "Jajka",
-                new BigDecimal(65),
-                StackType.UNIT,
+                "szklanka mąki pszennej",
+                new BigDecimal(250),
+                StackType.GlASS,
                 true,
                 new BigDecimal(180))
         );
         ingredientsBase.addIngredient(new Ingredient(
-                "Mleko",
-                new BigDecimal(100),
-                StackType.ML,
-                true,
+                "łyżeczka proszku do pieczenia",
+                new BigDecimal(5),
+                StackType.TEASPOON,
+                false,
                 new BigDecimal(65))
         );
         ingredientsBase.addIngredient(new Ingredient(
-                "Mąka",
-                new BigDecimal(100),
-                StackType.GRAMS,
-                true,
+                "szczypta soli",
+                new BigDecimal(1),
+                StackType.PINCH,
+                false,
                 new BigDecimal(18))
+        );
+        ingredientsBase.addIngredient(new Ingredient(
+                "łyżka cukru wanilinowego",
+                new BigDecimal(15),
+                StackType.SPOON,
+                false,
+                new BigDecimal(65))
+        );
+        ingredientsBase.addIngredient(new Ingredient(
+                "szklanka oleju roślinnego",
+                new BigDecimal(250),
+                StackType.GlASS,
+                false,
+                new BigDecimal(180))
+        );
+        ingredientsBase.addIngredient(new Ingredient(
+                "szklanka mleka",
+                new BigDecimal(250),
+                StackType.GlASS,
+                true,
+                new BigDecimal(180))
         );
         Map<String, Ingredient> selects = ingredientsBase.ingredientMap;
 
@@ -50,9 +71,9 @@ public class RunAtStart {
             Ingredient value = entry.getValue();
 
             ingredientRepository.save(value);
-        }
+        }*/
 
-        {
+        /*{
             List<Ingredient> ingredient=ingredientRepository.findByName("Mąka");
             System.out.println(ingredient);
         }
@@ -65,16 +86,20 @@ public class RunAtStart {
 
         System.out.println(ingredientsBase);*/
 
-        CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingredientRepository)
-                .setName("test next recipe")
-                .addIngredients( "Jajka",new BigDecimal(12))
-                .addIngredients( "Mleko",new BigDecimal(300))
-                .addIngredients( "Mąka",new BigDecimal(500))
-                .addPreparationStep("Wbij więcej jaj do mąki. Dolej mleka. Wymieszaj. Wtaw do piekarnika nagrzanego do 100* na 30 minut.",new BigDecimal(6))
+        /*CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingredientRepository)
+                .setName("GOFRY DOMOWE - Lekkie i chrupiące")
+                .addIngredients( "szklanka mąki pszennej",new BigDecimal(1.5))
+                .addIngredients( "łyżeczka proszku do pieczenia",new BigDecimal(1.5))
+                .addIngredients( "szczypta soli",new BigDecimal(1))
+                .addIngredients( "łyżka cukru wanilinowego",new BigDecimal(1))
+                .addIngredients( "Jajka",new BigDecimal(2))
+                .addIngredients( "szklanka oleju roślinnego",new BigDecimal(0.5))
+                .addIngredients( "szklanka mleka",new BigDecimal(1.33))
+                .addPreparationStep("Mąkę wsypać do miski, dodać proszek do pieczenia, sól, cukier, cukier wanilinowy. Wszystko wymieszać a następnie dodać jajka, olej roślinny oraz mleko. ...",new BigDecimal(20))
                 .build();
 
         cookingRecipeRepository.save(recipe);
 
-        System.out.println(recipe.toString());
+        System.out.println(recipe.toString());*/
     }
 }
