@@ -30,16 +30,19 @@ public class UserService {
 //    public User saveUser(User user) {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 //        user.setActive(1);
-//        Role userRole = roleRepository.findByRole("ADMIN");
+//        Role userRole = roleRepository.findByName("ADMIN");
 //        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 //        return userRepository.save(user);
 //    }
 
     public boolean registerUser(User user){
         try {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            return true;
+            if (user.getPassword().equals(user.getMatchingPassword())){
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//                user.setMatchingPassword(bCryptPasswordEncoder.encode(user.getMatchingPassword()));
+                userRepository.save(user);
+                return true;
+            }
         } catch(NullPointerException ex){
             ex.printStackTrace();
         }
