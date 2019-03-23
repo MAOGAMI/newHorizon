@@ -62,6 +62,37 @@ public class LoginController {
         return modelAndView;
     }
 
+    /***********/
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String registration2(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "register";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ModelAndView createNewUse2r(@Valid User user, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+        User userExists = userService.findUserByEmail(user.getEmail());
+        if (userExists != null) {
+            bindingResult
+                    .rejectValue("email", "error.user",
+                            "There is already a user registered with the email provided");
+        }
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("register");
+        } else {
+            userService.saveUser(user);
+            System.out.println(user);
+            modelAndView.addObject("successMessage", "User has been registered successfully");
+            modelAndView.addObject("user", new User());
+            modelAndView.setViewName("register");
+
+        }
+        return modelAndView;
+    }
+     /**/
+
     @RequestMapping(value = "/templates", method = RequestMethod.GET)
     public String home(Authentication authentication) {
 
