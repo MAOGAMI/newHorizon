@@ -2,9 +2,8 @@ package pl.mkpk.newhorizon.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.mkpk.newhorizon.model.User;
+import pl.mkpk.newhorizon.cookbook.Ingredient;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-    User findByEmail(String email);
+public interface IngredientRepository extends JpaRepository<Ingredient, Integer> {
 }
