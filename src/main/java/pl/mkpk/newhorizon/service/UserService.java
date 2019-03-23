@@ -40,6 +40,8 @@ public class UserService {
             if (user.getPassword().equals(user.getMatchingPassword())){
                 user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 //                user.setMatchingPassword(bCryptPasswordEncoder.encode(user.getMatchingPassword()));
+//                user.setRoles(new HashSet<Role>(Arrays.asList(roleRepository.findByName("USER"))));
+                user.setUserRole(roleRepository.findByName("USER"));
                 userRepository.save(user);
                 return true;
             }

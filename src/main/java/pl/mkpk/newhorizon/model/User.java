@@ -6,6 +6,7 @@ import pl.mkpk.newhorizon.validators.annotations.ValidEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Data
@@ -43,5 +44,11 @@ public class User {
 
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ManyToMany(cascade = CascadeType.ALL)
-    private Collection<Role> roles;
+//    private Set<Role> roles;
+    private Collection<Role> roles = new ArrayList<>();
+
+    public void setUserRole(Role role){
+        roles.add(role);
+    }
+
 }

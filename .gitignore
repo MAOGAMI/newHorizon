@@ -1,4 +1,5 @@
 /target/
+/resources/static/*
 
 # Ignore everything inside .idea except of code styles
 .idea/
@@ -42,3 +43,4 @@ modules.xml
 *.ipr
 
 # End of https://www.gitignore.io/api/intellij
+

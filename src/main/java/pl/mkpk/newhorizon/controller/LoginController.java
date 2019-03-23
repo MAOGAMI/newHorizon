@@ -1,6 +1,8 @@
 package pl.mkpk.newhorizon.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +15,6 @@ import pl.mkpk.newhorizon.repository.RoleRepository;
 import pl.mkpk.newhorizon.service.UserService;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 
 @Controller
 public class LoginController {
@@ -29,6 +30,18 @@ public class LoginController {
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+    @GetMapping("/index")
+    public ModelAndView postLogin(Authentication auth){
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        userDetails.getAuthorities();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index");
+        if (userDetails.getAuthorities().toString().contains("USER")){
+            return modelAndView;
+        }
         return modelAndView;
     }
 
@@ -49,7 +62,8 @@ public class LoginController {
         }
         // zapis do DB przez serwis użytkownika
         user.setActive(1);
-        user.setRoles(Arrays.asList(roleRepository.findByName("USER")));
+//        Role role = roleRepository.findByName("USER");
+//        user.addRole(role);
         userService.registerUser(user);
         return "redirect:login";
     }
