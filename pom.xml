@@ -17,8 +17,6 @@
     <properties>
         <java.version>1.8</java.version>
         <opencsv.version>4.5</opencsv.version>
-        <bootstrap.version>4.3.1</bootstrap.version>
-        <surefire.version>3.0.0-M3</surefire.version>
     </properties>
 
     <dependencies>
@@ -37,12 +35,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -64,18 +56,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>${opencsv.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${bootstrap.version}</version>
         </dependency>
 
         <!-- hot swapping, disable cache for template, enable live reload -->
@@ -95,11 +81,6 @@
                 <configuration>
                     <addResources>true</addResources>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire.version}</version>
             </plugin>
         </plugins>
     </build>
