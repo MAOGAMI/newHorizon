@@ -2,21 +2,27 @@ package pl.mkpk.newhorizon.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import pl.mkpk.newhorizon.model.User;
 import pl.mkpk.newhorizon.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Collection;
 
 @Controller
 public class LoginController {
+
     @Autowired
     UserService userService;
 
@@ -27,7 +33,7 @@ public class LoginController {
         return modelAndView;
     }
 
-    @GetMapping("/registration")
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -56,8 +62,23 @@ public class LoginController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/templates", method = RequestMethod.GET)
+    public String home(Authentication authentication) {
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        System.out.println("User has authorities: " + userDetails.getAuthorities());
+
+        if(userDetails.getAuthorities().toString().contains("ADMIN")){
+            return "redirect:/templates/admin/home";
+        }else if(userDetails.getAuthorities().toString().contains("USER")){
+            return "redirect:/templates/user/home";
+        }else{
+            return "redirect:/templates/dietetican/home";
+        }
+    }
+
     @RequestMapping(value = "/templates/admin/home", method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView adminhome() {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("AUTH ma wartosc: " + auth);
@@ -65,6 +86,30 @@ public class LoginController {
         modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
         modelAndView.setViewName("admin/home");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/templates/user/home", method = RequestMethod.GET)
+    public ModelAndView userhome(Authentication authentication) {
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("AUTH ma wartosc: " + auth);
+        User user = userService.findUserByEmail(auth.getName());
+        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        modelAndView.addObject("userMessage", "Content Available Only for Users with User Role");
+        modelAndView.setViewName("user/home");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/templates/dietetican/home", method = RequestMethod.GET)
+    public ModelAndView dieteticanhome() {
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("AUTH ma wartosc: " + auth);
+        User user = userService.findUserByEmail(auth.getName());
+        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        modelAndView.addObject("dieteticanMessage", "Content Available Only for Users with Dietetican Role");
+        modelAndView.setViewName("dietetican/home");
         return modelAndView;
     }
 }

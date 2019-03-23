@@ -36,41 +36,41 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
-    //    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//
-//        auth.inMemoryAuthentication()
-//                .withUser("admin").password("admin").roles("ADMIN").and()
-//                .withUser("user").password("user").roles("USER");
-//    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         auth
                 .jdbcAuthentication()
                 .usersByUsernameQuery(usersQuery)
+                //.usersByUsernameQuery("select u.email, u.password, u.active from user u where u.email=?")
                 .authoritiesByUsernameQuery(rolesQuery)
+                //.authoritiesByUsernameQuery("select u.email, r.role from user u " +
+                //        "inner join user_role ur on(u.user_id=ur.user_id) " +
+                //        "inner join role r on(ur.role_id=r.role_id) where u.email=?")
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.
-                authorizeRequests()
+        http
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/templates/admin/**").hasAuthority("ADMIN").anyRequest()
-                .authenticated().and().csrf().disable().formLogin()
-                .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/templates/admin/home")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .and().logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-//                .logoutSuccessUrl("/").and().exceptionHandling()
-//                .accessDeniedPage("/access-denied");
+                .antMatchers("/templates/admin/**").hasAuthority("ADMIN").anyRequest().authenticated()
+                .antMatchers("/templates/user/**").hasAnyAuthority("DIETETICAN","ADMIN","USER").anyRequest().authenticated()
+                .antMatchers("/templates/dietetican/**").hasAnyAuthority("ADMIN","DIETETICAN").anyRequest().authenticated()
+                .and()//.csrf().disable()
+                .formLogin()
+                    .loginPage("/login").failureUrl("/login?error=true")
+                    .defaultSuccessUrl("/templates")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                .and()
+                .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/").and().exceptionHandling();
     }
 }
