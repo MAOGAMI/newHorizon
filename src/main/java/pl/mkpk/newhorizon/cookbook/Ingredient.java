@@ -11,10 +11,10 @@ public class Ingredient {
     public int i_id;
     @Column(/*unique=true,*/ nullable=false,length = 50)
     public String name;
-    public String specifiedName;
+    public String specifiedName;//
 
     @Column(nullable=false)
-    public BigDecimal calculationPer;//specyfic calculation
+    public BigDecimal calculationPer;//specific calculation
     //example: 1 egg can have 64g -> calculationPer = 64, unit = "sztuki" (for stacking ingredients)
     @Column(nullable=false)
     @Enumerated(EnumType.STRING)
@@ -25,7 +25,7 @@ public class Ingredient {
 
     //unification data: per 100g/ml only
     @Column(nullable=false)
-    public BigDecimal kalories;
+    public BigDecimal calories;
     public BigDecimal fat;
     public BigDecimal satturatedFat;
     public BigDecimal protein;
@@ -38,7 +38,7 @@ public class Ingredient {
         this.calculationPer = BigDecimal.valueOf(100);
         this.unit = StackType.UNIT;
         this.alergen = false;
-        this.kalories = BigDecimal.valueOf(100);
+        this.calories = BigDecimal.valueOf(100);
     }
 
     public Ingredient(String name, BigDecimal calculationPer, StackType unit, boolean alergen, BigDecimal kaloriesPer100) {
@@ -46,7 +46,7 @@ public class Ingredient {
         this.calculationPer = calculationPer;
         this.unit = unit;
         this.alergen = alergen;
-        this.kalories = kaloriesPer100;
+        this.calories = kaloriesPer100;
     }
 
     public int getI_id() {

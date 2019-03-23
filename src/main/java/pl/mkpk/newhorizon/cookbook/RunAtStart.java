@@ -23,26 +23,31 @@ public class RunAtStart {
     public void GenerateIngredients(){
         //IngredientsBase ingredientsBase= new IngredientsBase();
 
-
-        Ingredient newIngredient= new Ingredient(
+        /*Ingredient newIngredient= new Ingredient(
                 "szklanka mąki pszennej",
                 new BigDecimal(250),
-                StackType.GlASS,
+                StackType.GLASS,
                 true,
                 new BigDecimal(180));
 
-        ingredientRepository.save(newIngredient);
+        ingredientRepository.save(newIngredient);*/
 
-        List<Ingredient> ingredientList=ingredientRepository.findAll();
+        /*List<Ingredient> ingredientList=ingredientRepository.findAll();
 
         for (Ingredient ingredient:ingredientList) {
             System.out.println(ingredient);
-        }
+        }*/
 
         CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingredientRepository)
-                .setName("Jajko z jajkiem na jajku")
-                .addIngredients( "Jajka",new BigDecimal(3))
-                .addPreparationStep("Dodaj jajko do jajka i umieść na jaku.",new BigDecimal(60))
+                .setName("Jajko ze wszystkim(wersja 3)")
+                .addIngredients( "3 sztuki Jajka")
+                .addIngredients( "3 łyżka cukru wanilinowego")
+                .addIngredients( "3.50 szklanki oleju roślinnego")
+                .addIngredients( "3 szklanka mąki pszennej")
+                .addIngredients( "0.50 szklanki mleka")
+                .addIngredients( "1 szczypta soli")
+                .addIngredients( "3 łyżeczki proszku do pieczenia")
+                .addPreparationStep("Dodaj jajko do reszty i umieść w misce.",new BigDecimal(60))
                 .build();
 
         cookingRecipeRepository.save(recipe);

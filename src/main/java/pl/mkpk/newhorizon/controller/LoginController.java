@@ -94,53 +94,39 @@ public class LoginController {
      /**/
 
     @RequestMapping(value = "/templates", method = RequestMethod.GET)
-    public String home(Authentication authentication) {
+    public ModelAndView home(Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         System.out.println("User has authorities: " + userDetails.getAuthorities());
 
+        ModelAndView modelAndView = new ModelAndView();
+
         if(userDetails.getAuthorities().toString().contains("ADMIN")){
-            return "redirect:/templates/admin/home";
+            //return "redirect:/templates/admin/home";
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userService.findUserByEmail(auth.getName());
+
+            modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+            modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+            modelAndView.setViewName("admin/home");
+            return modelAndView;
+
         }else if(userDetails.getAuthorities().toString().contains("USER")){
-            return "redirect:/templates/user/home";
+            //return "redirect:/templates/user/home";
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userService.findUserByEmail(auth.getName());
+            modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+            modelAndView.addObject("userMessage", "Content Available Only for Users with User Role");
+            modelAndView.setViewName("user/home");
+            return modelAndView;
         }else{
-            return "redirect:/templates/dietetican/home";
+            //return "redirect:/templates/dietetican/home";
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userService.findUserByEmail(auth.getName());
+            modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+            modelAndView.addObject("dieteticanMessage", "Content Available Only for Users with Dietetican Role");
+            modelAndView.setViewName("dietetican/home");
+            return modelAndView;
         }
-    }
-
-    @RequestMapping(value = "/templates/admin/home", method = RequestMethod.GET)
-    public ModelAndView adminhome() {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("AUTH ma wartosc: " + auth);
-        User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("admin/home");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/templates/user/home", method = RequestMethod.GET)
-    public ModelAndView userhome(Authentication authentication) {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("AUTH ma wartosc: " + auth);
-        User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("userMessage", "Content Available Only for Users with User Role");
-        modelAndView.setViewName("user/home");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/templates/dietetican/home", method = RequestMethod.GET)
-    public ModelAndView dieteticanhome() {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("AUTH ma wartosc: " + auth);
-        User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("dieteticanMessage", "Content Available Only for Users with Dietetican Role");
-        modelAndView.setViewName("dietetican/home");
-        return modelAndView;
     }
 }

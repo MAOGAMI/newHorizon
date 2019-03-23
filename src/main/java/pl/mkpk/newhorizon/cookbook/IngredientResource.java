@@ -37,7 +37,7 @@ public class IngredientResource {
 
     public BigDecimal calculateCalories() {
         BigDecimal result;
-        result=ingredient.calculationPer.multiply(ingredient.kalories).multiply(numberOfUnits).divide(new BigDecimal(100*100));
+        result=ingredient.calculationPer.multiply(ingredient.calories).multiply(numberOfUnits).divide(new BigDecimal(100*100));
         return result;
     }
 }
