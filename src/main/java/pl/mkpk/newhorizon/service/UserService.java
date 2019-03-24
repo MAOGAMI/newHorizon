@@ -27,20 +27,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-//    public User saveUser(User user) {
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-//        user.setActive(1);
-//        Role userRole = roleRepository.findByName("ADMIN");
-//        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-//        return userRepository.save(user);
-//    }
-
     public boolean registerUser(User user){
         try {
             if (user.getPassword().equals(user.getMatchingPassword())){
                 user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-//                user.setMatchingPassword(bCryptPasswordEncoder.encode(user.getMatchingPassword()));
-//                user.setRoles(new HashSet<Role>(Arrays.asList(roleRepository.findByName("USER"))));
                 user.setUserRole(roleRepository.findByName("USER"));
                 userRepository.save(user);
                 return true;
