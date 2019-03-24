@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import pl.mkpk.newhorizon.model.User;
-import pl.mkpk.newhorizon.repository.RoleRepository;
 import pl.mkpk.newhorizon.service.UserService;
 
 import javax.validation.Valid;
@@ -19,7 +18,6 @@ import javax.validation.Valid;
 @Controller
 public class LoginController {
     private UserService userService;
-    private RoleRepository roleRepository;
 
     @Autowired
     public LoginController(UserService userService) {
@@ -45,25 +43,20 @@ public class LoginController {
         return modelAndView;
     }
 
-    // obsługa żądzania przekierowania na stronę formularza
     @GetMapping("/register")
     public String registerUser(Model model) {
         User user = new User();
-        // dodajemy atrybut dla obiektu klasy Model ("nazwa stosowanana w html", nazwa bjektu Java)
         model.addAttribute("user", user);
-        return "register";  // przekierowanie na widok formularza rejestracji (html)
+        return "register";
     }
 
-    // obsługa żądzania przekazania obiektu z formularz metodą post
     @PostMapping("/register")
     public String registerUser(@ModelAttribute @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "register";
         }
-        // zapis do DB przez serwis użytkownika
+
         user.setActive(1);
-//        Role role = roleRepository.findByName("USER");
-//        user.addRole(role);
         userService.registerUser(user);
         return "redirect:login";
     }
