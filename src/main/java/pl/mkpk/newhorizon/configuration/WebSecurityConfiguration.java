@@ -25,7 +25,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/changePassword")
+                .antMatchers("/change-password")
                 .hasAnyAuthority("USER", "ADMIN", "DIETICAN")
                 .anyRequest()
                 .permitAll()
