@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
+//@Transactional()
 public class CookingRecipe {
 
     @Id
@@ -17,14 +18,18 @@ public class CookingRecipe {
 
     public String name;
 
-    @ElementCollection
+    @ElementCollection // <--@Embedded - An ElementCollection mapping can be used to define a collection of Embeddable objects.
+    //@Fetch(FetchMode.SUBSELECT)
+    //@BatchSize(size=500)
     @JoinTable(name = "ingredient_resource", joinColumns = @JoinColumn(name = "cr_id"))
-    List<IngredientResource> ingredients;
+    /*@CollectionTable(name = "ingredient_resource",
+            joinColumns = @JoinColumn(name="cr_id"))*/
+    List<IngredientResource> ingredients;// = new ArrayList<>();
 
     PreparationStep preparationSteps;
 
     public int numberOfPortions;
-    public BigDecimal kalories;
+    public BigDecimal calories;
 
     public List<IngredientResource> getIngredients() {
         return ingredients;
@@ -34,13 +39,15 @@ public class CookingRecipe {
         this.ingredients = ingredients;
     }
 
+    private CookingRecipe() {}
+
     private CookingRecipe(RecipeBuilder builder) {
         this.name = builder.name;
         this.ingredients = builder.ingredients;
         this.preparationSteps = builder.preparationSteps;
         this.numberOfPortions = 1;
 
-        this.kalories = calculateCalories();
+        this.calories = calculateCalories();
     }
 
     private BigDecimal calculateCalories() {
@@ -170,7 +177,7 @@ public class CookingRecipe {
                 ", \n\tingredients=" + this.ingredients +
                 ", \n\tpreparationSteps=" + this.preparationSteps +
                 ", \n\tnumberOfPortions=" + this.numberOfPortions +
-                ", \n\tcalories=" + this.kalories +
+                ", \n\tcalories=" + this.calories +
                 '}';
     }
 }

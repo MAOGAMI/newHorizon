@@ -1,23 +1,37 @@
 package pl.mkpk.newhorizon.cookbook;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.util.Assert;
 import pl.mkpk.newhorizon.repository.CookingRecipeRepository;
 import pl.mkpk.newhorizon.repository.IngredientRepository;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Component
+//@Transactional
 public class RunAtStart {
     private IngredientRepository ingredientRepository;
     private CookingRecipeRepository cookingRecipeRepository;
 
-    public RunAtStart(IngredientRepository ingredientRepository, CookingRecipeRepository cookingRecipeRepository) {
+    public RunAtStart(IngredientRepository ingredientRepository, CookingRecipeRepository cookingRecipeRepository,
+                      PlatformTransactionManager transactionManager) {
         this.ingredientRepository = ingredientRepository;
         this.cookingRecipeRepository = cookingRecipeRepository;
+
+        Assert.notNull(transactionManager, "The 'transactionManager' argument must not be null.");
+        this.transactionTemplate=new TransactionTemplate(transactionManager);
     }
+
+    private final TransactionTemplate transactionTemplate;
 
     @PostConstruct
     public void GenerateIngredients(){
@@ -38,20 +52,28 @@ public class RunAtStart {
             System.out.println(ingredient);
         }*/
 
-        CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingredientRepository)
-                .setName("Jajko ze wszystkim(wersja 3)")
-                .addIngredients( "3 sztuki Jajka")
-                .addIngredients( "3 łyżka cukru wanilinowego")
-                .addIngredients( "3.50 szklanki oleju roślinnego")
-                .addIngredients( "3 szklanka mąki pszennej")
-                .addIngredients( "0.50 szklanki mleka")
-                .addIngredients( "1 szczypta soli")
-                .addIngredients( "3 łyżeczki proszku do pieczenia")
-                .addPreparationStep("Dodaj jajko do reszty i umieść w misce.",new BigDecimal(60))
+        /*CookingRecipe recipe= new CookingRecipe.RecipeBuilder(ingredientRepository)
+                .setName("Jajko z niespodzianką 3")
+                .addIngredients( "1 sztuka Jajka")
+                .addIngredients( "12 szklanki mąki pszennej")
+                .addPreparationStep("Poprostu coś 6.",new BigDecimal(1))
                 .build();
 
-        cookingRecipeRepository.save(recipe);
+        cookingRecipeRepository.save(recipe);*/
 
-        System.out.println(recipe.toString());
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                List<CookingRecipe> recipes=cookingRecipeRepository.findAll();
+                System.out.println();
+                System.out.println(recipes);
+                System.out.println();
+                //System.out.println(recipes.get(0).getIngredients());
+                //System.out.println();
+            }
+        });
+
+        /*CookingRecipe recipe=cookingRecipeRepository.findAll().get(0);
+        System.out.println(recipe);*/
     }
 }

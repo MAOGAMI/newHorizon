@@ -7,9 +7,10 @@ import java.math.BigDecimal;
 public class IngredientResource {
 
     //@Transient
-    @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "i_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "i_id",referencedColumnName ="i_id")
     public Ingredient ingredient;
+
     BigDecimal numberOfUnits;
 
     public IngredientResource() {

@@ -3,7 +3,7 @@ package pl.mkpk.newhorizon;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.mkpk.newhorizon.cookbook.CookingRecipe;
-import pl.mkpk.newhorizon.cookbook.IngredientsBase;
+//import pl.mkpk.newhorizon.cookbook.IngredientsBase;
 import pl.mkpk.newhorizon.cookbook.Ingredient;
 import pl.mkpk.newhorizon.cookbook.StackType;
 

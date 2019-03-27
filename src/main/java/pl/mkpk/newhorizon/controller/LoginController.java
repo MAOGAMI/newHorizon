@@ -33,14 +33,15 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    /***********/
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registration(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "registration";
+        return "register";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userService.findUserByEmail(user.getEmail());
@@ -50,38 +51,12 @@ public class LoginController {
                             "There is already a user registered with the email provided");
         }
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registration");
-        } else {
-            userService.saveUser(user);
-            System.out.println(user);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new User());
-            modelAndView.setViewName("registration");
-
-        }
-        return modelAndView;
-    }
-
-    /***********/
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String registration2(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "register";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView createNewUse2r(@Valid User user, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByEmail(user.getEmail());
-        if (userExists != null) {
+            modelAndView.setViewName("register");
+        } else if(user.getPassword().equals(user.getMatchingPassword())==false) {
             bindingResult
                     .rejectValue("email", "error.user",
-                            "There is already a user registered with the email provided");
-        }
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("register");
-        } else {
+                            "passwords don't match");
+        }else{
             userService.saveUser(user);
             System.out.println(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
@@ -91,7 +66,37 @@ public class LoginController {
         }
         return modelAndView;
     }
-     /**/
+
+    /**/
+
+     @RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
+     public ModelAndView forgotPassword(/*@Valid User user, BindingResult bindingResult*/) {
+         ModelAndView modelAndView = new ModelAndView();
+         modelAndView.setViewName("forgot-password");
+         return modelAndView;
+
+         /*ModelAndView modelAndView = new ModelAndView();
+         User userExists = userService.findUserByEmail(user.getEmail());
+         if (userExists != null) {
+             bindingResult
+                     .rejectValue("email", "error.user",
+                             "There is already a user registered with the email provided");
+         }
+
+         if (bindingResult.hasErrors()) {
+             modelAndView.setViewName("forgot-password");
+         } else {
+             userService.saveUser(user);
+             System.out.println(user);
+             modelAndView.addObject("successMessage", "User has been registered successfully");
+             modelAndView.addObject("user", new User());
+             modelAndView.setViewName("forgot-password");
+
+         }
+         return modelAndView;*/
+     }
+
+
 
     @RequestMapping(value = "/templates", method = RequestMethod.GET)
     public ModelAndView home(Authentication authentication) {

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import pl.mkpk.newhorizon.model.User;
 
 @Repository()
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 }

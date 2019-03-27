@@ -2,12 +2,15 @@ package pl.mkpk.newhorizon.cookbook;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue//(strategy = GenerationType.AUTO)
+    //@OneToOne(mappedBy = "ingredient")
     public int i_id;
     @Column(/*unique=true,*/ nullable=false,length = 50)
     public String name;
@@ -41,12 +44,12 @@ public class Ingredient {
         this.calories = BigDecimal.valueOf(100);
     }
 
-    public Ingredient(String name, BigDecimal calculationPer, StackType unit, boolean alergen, BigDecimal kaloriesPer100) {
+    public Ingredient(String name, BigDecimal calculationPer, StackType unit, boolean alergen, BigDecimal caloriesPer100) {
         this.name = name;
         this.calculationPer = calculationPer;
         this.unit = unit;
         this.alergen = alergen;
-        this.calories = kaloriesPer100;
+        this.calories = caloriesPer100;
     }
 
     public int getI_id() {
